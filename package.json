@@ -1,6 +1,6 @@
 {
   "name": "tweet-to-repo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Turn a tweet (or any text brief) into an open-source GitHub repo, autonomously.",
   "bin": {
     "tweet-to-repo": "dist/cli.js"
@@ -9,11 +9,12 @@
   "files": [
     "dist",
     "src/prompts",
+    ".claude/skills/tweet-to-repo/SKILL.md",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
-    "build": "tsc && chmod +x dist/cli.js && cp -R src/prompts dist/prompts",
+    "build": "tsc && chmod +x dist/cli.js && cp -R src/prompts dist/prompts && mkdir -p dist/skill && cp .claude/skills/tweet-to-repo/SKILL.md dist/skill/SKILL.md",
     "dev": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"

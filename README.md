@@ -27,7 +27,7 @@ $ tweet-to-repo "https://x.com/karpathy/status/1234567890123456789"
 → Scaffolding mdgrep
   ✓ Wrote SPEC.md and initialized git at ./mdgrep
 
-→ Spawning autonomous builder (claude-opus-4-5, yolo mode)
+→ Spawning autonomous builder (claude-opus-4-6, yolo mode)
   [builder streaming output — this may take a few minutes]
     ... builder writes files, runs tests, commits ...
   ✓ Build complete at ./mdgrep
@@ -45,21 +45,47 @@ brief in, working repo out, attribution preserved.
 
 ## Install
 
+Pick one:
+
+### Option 1 — npm (recommended)
+
 ```bash
 npm i -g tweet-to-repo
+# (optional) also install the Claude Code skill wrapper
+tweet-to-repo install-skill
 ```
 
-Or one-liner:
+### Option 2 — one-liner installer
+
+Does the npm install **and** the skill install in one shot, plus a doctor that checks your `claude` / `gh` setup.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kushalpatil07/tweet-to-repo/main/install.sh | sh
 ```
 
-Prerequisites:
+### Option 3 — from source (for hacking on it)
+
+```bash
+git clone https://github.com/kushalpatil07/tweet-to-repo
+cd tweet-to-repo
+npm install
+npm run build
+npm link        # makes `tweet-to-repo` available globally
+```
+
+### Prerequisites
 
 - **Node 20+**
 - **[`claude`](https://claude.com/claude-code)** CLI, logged in
-- **[`gh`](https://cli.github.com/)** CLI, authed (`gh auth login`) — only needed to actually push
+- **[`gh`](https://cli.github.com/)** CLI, authed (`gh auth login`) — only needed to actually push to GitHub
+
+### About the Claude Code skill
+
+The skill is a thin wrapper that lets you invoke the CLI as `/tweet-to-repo <input>` from inside a Claude Code session. It lives at `~/.claude/skills/tweet-to-repo/SKILL.md`.
+
+`npm i -g` ships the CLI only — the skill is opt-in via `tweet-to-repo install-skill` (or the curl installer, which does it for you). The skill file is bundled inside the npm package, so no network fetch is needed.
+
+To update the skill after upgrading the CLI: `tweet-to-repo install-skill --force`.
 
 ## Quickstart
 
@@ -94,7 +120,7 @@ Options:
   --private             Create the GitHub repo as private
   --yes                 Skip confirmation prompts
   --dry-run             Skip the `gh` push step
-  --model <id>          Claude model to use (default: claude-opus-4-5)
+  --model <id>          Claude model to use (default: claude-opus-4-6)
   --skip-build          Scaffold SPEC.md only; don't run the builder
   -V, --version         Show version
   -h, --help            Show help

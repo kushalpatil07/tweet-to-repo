@@ -10,9 +10,10 @@ import { scaffoldEmptyRepo } from "./repo.js";
 import { runBuilder } from "./build.js";
 import { createAndPush, ghAuthed, hasGh } from "./github.js";
 import { hasClaudeCli } from "./claude.js";
+import { installSkill } from "./installSkill.js";
 
 const TOOL_URL = "https://github.com/kushalpatil07/tweet-to-repo";
-const DEFAULT_MODEL = "claude-opus-4-5";
+const DEFAULT_MODEL = "claude-opus-4-6";
 
 const program = new Command();
 
@@ -21,6 +22,28 @@ program
   .description(
     "Turn a tweet (or any text brief) into an open-source GitHub repo, autonomously.",
   )
+  .version("0.1.1");
+
+program
+  .command("install-skill")
+  .description(
+    "Install the Claude Code skill wrapper to ~/.claude/skills/tweet-to-repo/",
+  )
+  .option("-f, --force", "overwrite an existing skill file", false)
+  .action(async (opts: { force: boolean }) => {
+    try {
+      console.log(kleur.bold().cyan("→ Installing tweet-to-repo skill"));
+      await installSkill({ force: opts.force });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(kleur.red(`\nerror: ${msg}`));
+      process.exit(1);
+    }
+  });
+
+program
+  .command("run", { isDefault: true })
+  .description("Turn an input into a new open-source repo (default command)")
   .argument("[input]", "tweet URL, quoted brief, or '-' to read stdin")
   .option("--file <path>", "read the brief from a local file")
   .option("--name <slug>", "override the generated repo name (kebab-case)")
@@ -30,7 +53,6 @@ program
   .option("--dry-run", "skip the `gh` push step", false)
   .option("--model <id>", "claude model to use", DEFAULT_MODEL)
   .option("--skip-build", "scaffold SPEC.md only, do not run the builder", false)
-  .version("0.1.0")
   .action(async (input: string | undefined, opts) => {
     try {
       await main(input, opts);
