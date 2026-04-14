@@ -1,0 +1,54 @@
+{
+  "name": "tweet-to-repo",
+  "version": "0.1.0",
+  "description": "Turn a tweet (or any text brief) into an open-source GitHub repo, autonomously.",
+  "bin": {
+    "tweet-to-repo": "dist/cli.js"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "src/prompts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/cli.js && cp -R src/prompts dist/prompts",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "tweet",
+    "github",
+    "scaffold",
+    "autonomous",
+    "agent"
+  ],
+  "license": "MIT",
+  "author": "Kushal Patil",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kushalpatil07/tweet-to-repo.git"
+  },
+  "homepage": "https://github.com/kushalpatil07/tweet-to-repo#readme",
+  "bugs": {
+    "url": "https://github.com/kushalpatil07/tweet-to-repo/issues"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "kleur": "^4.1.5",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/prompts": "^2.4.9",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}
